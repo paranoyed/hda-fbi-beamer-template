@@ -37,6 +37,7 @@ main=english %% By using `czech` or `slovak` as the main locale
 \usepackage{amsmath, amssymb}
 \usepackage{url}       % `\url`s
 \usepackage{listings}  % Code listings
+\usepackage{animate} % for animated GIFs
 \frenchspacing
 
 \begin{document}
@@ -301,6 +302,11 @@ return 0;
 \end{lstlisting}}
 \begin{frame}{Code listings}{An example source code in C}
 \sleepSort
+\end{frame}
+
+\begin{frame}{This is an animation}
+\framesubtitle{Works with Adobe Reader}
+\animategraphics[width=\textwidth]{12}{resources/gif/frame-}{0}{36}
 \end{frame}
 
 \section{End}
