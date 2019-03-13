@@ -1,0 +1,8 @@
+build:
+  image: marvinmenzerath/latex
+  artifacts:
+    paths:
+      - presentation.pdf
+  script:
+    - latexmk -pdf presentation.tex
+
