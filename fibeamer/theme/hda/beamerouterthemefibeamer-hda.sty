@@ -51,8 +51,8 @@
 %% The names of the source files used are shown above.
 %% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{fibeamer/theme/mu/%
-  beamerouterthemefibeamer-mu}[2016/01/12]
+\ProvidesPackage{fibeamer/theme/hda/%
+  beamerouterthemefibeamer-hda}[2016/01/12]
 \mode<presentation>
   \RequirePackage{ifthen}
   \RequirePackage{ifpdf}
@@ -113,8 +113,10 @@
     \ifnum\c@framenumber=0\else%
     
         \begin{tikzpicture}[remember picture, overlay]
+        
             \node[anchor=north east,  opacity=0.1] at (current page.north east) {
-                \includegraphics[width=0.15\textwidth]{fibeamer/theme/\fibeamer@university/watermark.png}
+            	\IfFileExists{fibeamer/theme/\fibeamer@university/watermark-\fibeamer@faculty.png}{\def\watermark{fibeamer/theme/\fibeamer@university/watermark-\fibeamer@faculty.png}}{\def\watermark{fibeamer/theme/\fibeamer@university/watermark.png}}
+                \includegraphics[width=0.15\textwidth]{\watermark}
             };
         
         \end{tikzpicture}

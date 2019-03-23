@@ -6,7 +6,7 @@
 %%
 %% fibeamer.dtx  (with options: `class')
 %% 
-%% Copyright 2015  Vít Novotný <witiko@mail.muni.cz>
+%% Copyright 2016-2017  Vít Novotný <witiko@mail.muni.cz>
 %% Faculty of Informatics, Masaryk University (Brno, Czech Republic)
 %% 
 %% This work is based on the (Unofficial) University of Manchester
@@ -55,7 +55,7 @@
   \gdef\fibeamer@version@number{#1}
   \gdef\fibeamer@version@date{#2}
   \gdef\fibeamer@version{#2 #1 fibeamer MU beamer theme}}
-\fibeamer@versiondef{v1.1.5}{2016/06/16}}
+\fibeamer@versiondef{v1.1.7}{2017/07/05}}
 \hypersetup{%
   pdfcreator=\fibeamer@version,
   pdfencoding=auto}
@@ -141,6 +141,9 @@
   logo=\fibeamer@logoPath fibeamer-\fibeamer@university-%
     \fibeamer@faculty-\fibeamer@logoLocale}
 \DeclareOptionBeamer{fallbackLogo}{\def\fibeamer@fallbackLogo{#1}}
+\ExecuteOptionsBeamer{%
+  fallbackLogo=\fibeamer@logoPath fibeamer-\fibeamer@university-%
+    \fibeamer@faculty-english}
 \def\fibeamer@require#1{\IfFileExists{#1.sty}{%
   \@ifpackageloaded{#1}{}{\RequirePackage{#1}}}{}}
 \def\fibeamer@requireTheme#1{%
@@ -150,23 +153,15 @@
   \fibeamer@require{\fibeamer@themePath\fibeamer@university%
     /beamer#1themefibeamer-\fibeamer@university-\fibeamer@faculty}}
 \fibeamer@require{etoolbox}
-
-\newcommand\fibeamer@includeLogo[1][]{
-
-    \begin{tikzpicture}[remember picture,overlay]
-        \coordinate (SW) at (current page.south west);
-        \coordinate (SE) at (current page.south east);
-        \coordinate (NW) at (current page.north west);
-        \coordinate (NE) at (current page.north east);
-    
-        \fill[white] ($(NW)!0.1!(SW)$) rectangle ($(NE)!0.25!(SE)$);
-        \node at (0,-0.7) {\includegraphics[width=0.25\paperwidth]{fibeamer/theme/\fibeamer@university/\fibeamer@logo}};
-
-    \end{tikzpicture}
-    
-   % \includegraphics[#1]\fibeamer@logo
-}
-
+\newcommand\fibeamer@includeLogo[1][]{{
+  % See <http://tex.stackexchange.com/a/39987/70941>.
+  \patchcmd{\Gin@ii}% Make `\includegraphics` use `@fallbackLogo`.
+    {\begingroup}% <search>
+    {\begingroup\renewcommand{\@latex@error}[2]{%
+       \includegraphics[#1]\fibeamer@fallbackLogo}}% <replace>
+    {}% <success>
+    {}% <failure>
+  \includegraphics[#1]\fibeamer@logo}}
 \def\fibeamer@patch#1#2{%
   \def\fibeamer@patch@versions{#1}%
   \def\fibeamer@patch@action{#2}%
@@ -216,9 +211,9 @@
 
     \ifthenelse{\boolean{xetex}\OR\boolean{luatex}}{
       \RequirePackage{fontspec}
-      \setmonofont[Scale=0.85,Ligatures=TeX]{DejaVu Sans Mono}
+      \setmonofont[Scale=0.85]{DejaVu Sans Mono}
     }{
-      \usepackage[scaled=0.85]{DejaVuSansMono}
+      \RequirePackage[scaled=0.85]{DejaVuSansMono}
       \RequirePackage[resetfonts]{cmap}
       \RequirePackage[T1]{fontenc}
     }
@@ -234,4 +229,3 @@
 \endinput
 %%
 %% End of file `beamerthemefibeamer.sty'.
-

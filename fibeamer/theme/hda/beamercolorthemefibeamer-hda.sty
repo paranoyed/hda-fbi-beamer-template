@@ -1,60 +1,100 @@
-%%
-%% This is file `beamercolorthemefibeamer-mu.sty',
-%% generated with the docstrip utility.
-%%
-%% The original source files were:
-%%
-%% base.dtx  (with options: `color')
-%% 
-%% Copyright 2015  Vít Novotný <witiko@mail.muni.cz>
-%% Faculty of Informatics, Masaryk University (Brno, Czech Republic)
-%% 
-%% This work is based on the (Unofficial) University of Manchester
-%% Beamer Theme by Andrew Mundy <andrew.mundy@cs.man.ac.uk>.
-%% 
-%% This work may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either version
-%% 1.3 of this license or (at your option) any later version.
-%% The latest version of this license is available at
-%% 
-%%   http://www.latex-project.org/lppl.txt
-%% 
-%% and version 1.3 or later is part of all distributions of LaTeX
-%% version 2005/12/01 or later.
-%% 
-%% This work has the LPPL maintenance status `maintained'.
-%% 
-%% The Current Maintainer of this work is Vít Novotný (VN).
-%% Send bug reports, requests for additions and questions
-%% either to the fithesis discussion forum at
-%% 
-%%   http://is.muni.cz/auth/df/fithesis-sazba/
-%% 
-%% or to the e-mail address <witiko@mail.muni.cz>.
-%% 
-%% 
-%% MODIFICATION ADVICE:
-%% 
-%% If you want to customize this file, it is best to make a copy of
-%% the source file(s) from which it was produced.  Use a different
-%% name for your copy(ies) and modify the copy(ies); this will ensure
-%% that your modifications do not get overwritten when you install a
-%% new release of the standard system.  You should also ensure that
-%% your modified source file does not generate any modified file with
-%% the same name as a standard file.
-%% 
-%% You will also need to produce your own, suitably named, .ins file to
-%% control the generation of files from your source file; this file
-%% should contain your own preambles for the files it generates, not
-%% those in the standard .ins files.
-%% 
-%% The names of the source files used are shown above.
-%% 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{fibeamer/theme/mu/%
-  beamercolorthemefibeamer-mu}[2016/05/06]
+\ProvidesPackage{fibeamer/theme/hda/%
+  beamercolorthemefibeamer-hda}[2016/05/06]
 \newenvironment{darkframes}{}{}
 \mode<presentation>
+
+\def\fibeamer@logo{logo-\fibeamer@faculty}
+\def\fibeamer@fallbackLogo{logo}
+
+% -- START Colors
+\definecolor{fibeamer@black}{HTML}{000000}
+\definecolor{fibeamer@white}{HTML}{FFFFFF}
+\definecolor{fibeamer@gray}{HTML}{EEEEEE}
+\definecolor{fibeamer@red}{HTML}{C00A35}
+
+% Include faculty specific colors
+\IfFileExists{fibeamer/theme/hda/colors-\fibeamer@faculty.sty}{\input{fibeamer/theme/hda/colors-\fibeamer@faculty.sty}}{\input{fibeamer/theme/hda/colors.sty}}
+
+% \colorprovide sets color only if it has not been set before
+\newcommand{\colorprovide}[2]{%
+	\@ifundefined{\string\color@#1}{\colorlet{#1}{#2}}{}
+}
+
+\colorprovide{fibeamer@logoBarColor}{fibeamer@white}
+\colorprovide{fibeamer@titleColor}{fibeamer@primary}
+\colorprovide{fibeamer@textColor}{fibeamer@black}
+
+\colorprovide{fibeamer@primaryLight}{fibeamer@primary!30!fibeamer@white}
+\colorprovide{fibeamer@primaryDark}{fibeamer@primary!60!fibeamer@black}
+\colorprovide{fibeamer@subtitleColor}{fibeamer@textColor!75!fibeamer@white}
+
+% Text colors
+\setbeamercolor{title}{fg=fibeamer@frontMatterTextColor} % , bg=fibeamer@primary
+
+%% Background gradients
+\colorlet{fibeamer@dark@backgroundInner}{fibeamer@primary}
+\colorlet{fibeamer@dark@backgroundOuter}{fibeamer@primary}
+\colorlet{fibeamer@light@backgroundInner}{fibeamer@white}
+\colorlet{fibeamer@light@backgroundOuter}{fibeamer@white}
+\renewenvironment{darkframes}{%
+	\begingroup
+	\fibeamer@darktrue
+	%% Structures
+	\setbeamercolor*{frametitle}{fg=fibeamer@secondary}
+	\setbeamercolor*{framesubtitle}{fg=fibeamer@white}
+	%% Text
+	\setbeamercolor*{normal text}{fg=fibeamer@white, bg=fibeamer@primary}
+	\setbeamercolor*{structure}{fg=fibeamer@white, bg=fibeamer@primary}
+	\setbeamercolor*{alerted text}{fg=fibeamer@primaryLight}
+	%% Items, footnotes and links
+	\setbeamercolor*{item}{fg=fibeamer@secondary}
+	\setbeamercolor*{footnote mark}{fg=fibeamer@secondary}
+	\hypersetup{urlcolor=fibeamer@secondary}
+	%% Blocks
+	\setbeamercolor*{block title}{%
+		fg=fibeamer@white, bg=fibeamer@primaryLight}
+	\setbeamercolor*{block title example}{%
+		fg=fibeamer@white, bg=fibeamer@primaryLight}
+	\setbeamercolor*{block title alerted}{%
+		fg=fibeamer@primaryDark, bg=fibeamer@primaryLight}
+	\setbeamercolor*{block body}{%
+		fg=fibeamer@primary,
+		bg=fibeamer@gray!15!fibeamer@white}
+	\usebeamercolor*{normal text}
+	% Code listings
+	\lstset{%
+		commentstyle=\color{green!30!fibeamer@white},
+		keywordstyle=\color{fibeamer@secondary},
+		stringstyle=\color{fibeamer@red!30!fibeamer@white}}f
+}{%
+	\endgroup}
+%% Structures
+\setbeamercolor{frametitle}{fg=fibeamer@titleColor}
+\setbeamercolor{framesubtitle}{fg=fibeamer@subtitleColor}
+%% Text
+\setbeamercolor{normal text}{fg=fibeamer@textColor, bg=fibeamer@white}
+\setbeamercolor{structure}{fg=fibeamer@textColor, bg=fibeamer@white}
+\setbeamercolor{alerted text}{fg=fibeamer@red}
+\addtobeamertemplate{block begin}{%
+	\iffibeamer@dark % alerted text in plain block at dark slides
+	\setbeamercolor{alerted text}{fg=fibeamer@primaryLight}%
+	\fi}{}
+%% Items, footnotes and links
+\setbeamercolor*{item}{fg=fibeamer@textColor}
+\setbeamercolor*{footnote mark}{fg=fibeamer@textColor}
+\hypersetup{urlcolor=fibeamer@textColor}
+%% Blocks
+\setbeamercolor{block title}{%
+	fg=fibeamer@white, bg=fibeamer@textColor}
+\setbeamercolor{block title example}{%
+	fg=fibeamer@white, bg=fibeamer@textColor}
+\setbeamercolor{block title alerted}{%
+	fg=fibeamer@white, bg=fibeamer@red}
+\setbeamercolor{block body}{%
+	fg=fibeamer@textColor, bg=fibeamer@gray!20!fibeamer@white}
+% -- END Colors
+
   \RequirePackage{listings}
   \RequirePackage{ifthen}
   \RequirePackage{tikz}
@@ -84,6 +124,38 @@
     fg=block body.fg,
     bg=block body.bg}
   \hypersetup{colorlinks,linkcolor=}
+    
+  \renewcommand\fibeamer@includeLogo[1][]{{
+  		% See <http://tex.stackexchange.com/a/39987/70941>.
+  		\patchcmd{\Gin@ii}% Make `\includegraphics` use `@fallbackLogo`.
+  		{\begingroup}% <search>
+  		{\begingroup\renewcommand{\@latex@error}[2]{%
+  				\includegraphics[width=0.25\paperwidth]{fibeamer/logo/\fibeamer@university/\fibeamer@fallbackLogo}}}% <replace>
+  		{}% <success>
+  		{}% <failure>
+  	
+  	\begin{tikzpicture}[remember picture,overlay]
+  	\coordinate (SW) at (current page.south west);
+  	\coordinate (SE) at (current page.south east);
+  	\coordinate (NW) at (current page.north west);
+  	\coordinate (NE) at (current page.north east);
+  	
+  	\fill[fibeamer@logoBarColor] ($(NW)!0.1!(SW)$) rectangle ($(NE)!0.25!(SE)$);
+  	\node at (0,-0.7) {\includegraphics[width=0.25\paperwidth]{fibeamer/logo/\fibeamer@university/\fibeamer@logo}};
+  	
+  	\end{tikzpicture}
+  }}
+\lstset{%
+	basicstyle=\footnotesize\ttfamily,
+	breakatwhitespace=false,
+	breaklines=true,
+	commentstyle=\color{green!60!fibeamer@black},
+	extendedchars=true,
+	keywordstyle=\color{fibeamer@primary},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	stringstyle=\color{violet}}
 \mode
 <all>
 \endinput
