@@ -151,22 +151,24 @@
     % Input the title
     \usebeamerfont{title}%
     \usebeamercolor[fg]{title}%
-    \begin{minipage}[b][2\baselineskip][b]{\textwidth}%
-      \raggedright\inserttitle
+    \vskip1.5\baselineskip
+    \begin{minipage}[t]{\textwidth}%
+      \inserttitle
+      \vskip-.5\baselineskip
+      
+      % Input the dashed line
+      \begin{pgfpicture}
+      	\pgfsetlinewidth{2pt}
+      	\pgfsetroundcap
+      	\pgfsetdash{{0pt}{4pt}}{0cm}
+      	
+      	\pgfpathmoveto{\pgfpoint{0mm}{0mm}}
+      	\pgfpathlineto{\pgfpoint{\textwidth}{0mm}}
+      	
+      	\pgfusepath{stroke}
+      \end{pgfpicture}
     \end{minipage}
-    \vskip-.5\baselineskip
 
-    % Input the dashed line
-    \begin{pgfpicture}
-      \pgfsetlinewidth{2pt}
-      \pgfsetroundcap
-      \pgfsetdash{{0pt}{4pt}}{0cm}
-
-      \pgfpathmoveto{\pgfpoint{0mm}{0mm}}
-      \pgfpathlineto{\pgfpoint{\textwidth}{0mm}}
-
-      \pgfusepath{stroke}
-    \end{pgfpicture}
     \vfill
     % Input the subtitle
     \usebeamerfont{subtitle}%
